@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import 'dotenv/config';
 import './db/conn.js';
+import './config/cloudinaryConfig.js'
 import apiRoute from './routes/api.routes.js';
 
 // dotenv.config();
@@ -18,13 +19,12 @@ const corsOptions = {
 }
 app.use(cors(corsOptions));
 
-
 // cross parse to store and retrieve cookies
 app.use(cookieParser());
 
 // for images and posting data
-app.use(bodyParser.json({limit: "30mb", extended: true}));
-app.use(bodyParser.urlencoded({limit: "30mb", extended: true}));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res)=>{
     res.send("Home Page");
