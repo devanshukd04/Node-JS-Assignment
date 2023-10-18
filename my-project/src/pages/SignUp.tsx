@@ -171,6 +171,7 @@ function SignUp() {
             <button
               className="button w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 rounded-md text-white text-sm"
               type="submit"
+              onClick={()=>onSubmit(getValues())}
             >
               Submit
             </button>

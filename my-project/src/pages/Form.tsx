@@ -1,33 +1,44 @@
 import React, { useState } from "react";
 import { Stepper, Step, Button } from "@material-tailwind/react";
-import {Form1Data} from '../data.ts';
-import Form1 from './FormPage1.tsx';
-import Form2 from './FormPage2.tsx';
-import Form3 from './FormPage3.tsx';
+import { Form1Data } from "../data.ts";
+import Form1 from "./FormPage1.tsx";
+import Form2 from "./FormPage2.tsx";
+import Form3 from "./FormPage3.tsx";
+import { useNavigate, Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from 'axios'
 
 function Form() {
+  
+  const navigate = useNavigate();
   const [step, setStep] = useState<number>(1);
   const [isFirstStep, setIsFirstStep] = useState<boolean>(true);
   const [isLastStep, setIsLastStep] = useState<boolean>(false);
   const [isValid, setIsValid] = useState<boolean>(true);
+  const [isValidatePrev, setIsValidatePrev] = useState<boolean>(true);
+  const [isValidateNext, setIsValidateNext] = useState<boolean>(true);
+
   const [form1Data, setForm1Data] = useState<Form1Data>({
-    username:'',
-  email:'',
-  number:'',
-  addressLine1:'',
-  addressLine2:'',
-  city:'',
-  state:'',
-  pincode:'',
-  country:'',
+    username: "",
+    email: "",
+    number: "",
+    addressLine1: "",
+    addressLine2: "",
+    city: "",
+    state: "",
+    pincode: "",
+    country: "",
   });
+  const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
+
+  const [form3Data,setForm3Data]=useState<[]>([]);
 
   const handleNext = () => {
-    if(step==2){
+    if (step == 2) {
       setIsFirstStep(false);
       setIsLastStep(true);
-    }
-    else{
+    } else {
       setIsFirstStep(false);
       setIsLastStep(false);
     }
@@ -35,53 +46,163 @@ function Form() {
   };
 
   const handlePrev = () => {
-    if(step==2){
+    if (step == 2) {
       setIsFirstStep(true);
       setIsLastStep(false);
-    }
-    else{
+    } else {
       setIsFirstStep(false);
       setIsLastStep(false);
     }
     setStep(step - 1);
   };
 
-  console.log(step);
-  console.log("Is First Step ",isFirstStep);
-  console.log("Is Last Step ",isLastStep);
+  const resetForm=()=>{
+    setTimeout(function () {
+      navigate("/signin", { state: { page: 1 } });
+    }, 500);
+  }
+
+  const handlePrevValidate=()=>{
+setIsValidatePrev(true);
+  }
+
+  const handleNextValidate=()=>{
+   setIsValidateNext(true); 
+  }
+  
+
+  const handleSubmit=async()=>{
+    try{
+    const token=localStorage.getItem('token');
+    const config = {
+      headers: {
+        "authorization": token
+      },
+    };
+
+    const formData = new FormData();
+    // Here was the problem -- I was appending the array itself
+    // to the "files" field
+    if(selectedFiles){
+    for (const file of selectedFiles) {
+      formData.append("files", file);
+    }
+  }
+
+    const data={
+      form1Data:form1Data,
+      form3Data:form3Data
+    }
+
+    formData.append("data", JSON.stringify(data || {}));
+
+    console.log("Data ",formData);
+    
+    const res = await axios.post(
+      "http://localhost:5000/api/form/upload-data",
+      formData,
+      config
+    );
+    let resData = res?.data;
+    console.log(res)
+    console.log(res.data)
+
+    
+
+    if (resData?.success) {
+      toast.success(`User created successfully!`, {position: toast.POSITION.TOP_CENTER, autoClose: 1500,})
+      setTimeout(function () {
+        navigate("/signin", { state: { page: 1 } });
+      }, 2500);
+    }
+  } catch (err) {
+    console.log(err)
+    toast.warn(err?.message, {position: toast.POSITION.TOP_CENTER, autoClose: 1500,})
+  }
+  }
 
   return (
     <>
       <div className="w-full py-4 px-8 bg-red-100">
-        <Stepper className="mt-4 flex justify-between bg-black text-white"
+        <Stepper
+          className="mt-4 flex justify-between bg-black text-white"
           activeStep={step}
         >
-          <Step onClick={() => setStep(1)}>1</Step>
-          <Step onClick={() => setStep(2)}>2</Step>
-          <Step onClick={() => setStep(3)}>3</Step>
+          <Step>1</Step>
+          <Step>2</Step>
+          <Step>3</Step>
         </Stepper>
-        <div className="mt-16 flex justify-between">
-          <Button disabled={!isValid || isFirstStep} onClick={handlePrev}>
-            Prev
-          </Button>
-          <Button disabled={!isValid || isLastStep} onClick={handleNext}>
-            Next
-          </Button>
-        </div>
       </div>
 
-      {step == 1 && <><Form1 formData={form1Data} setFormData={setForm1Data}/></>}
-      {step == 2 && <><Form2/></>}
-      {step == 3 && <><Form3/></>}
+      {step == 1 && (
+        <>
+          <Form1
+            formData={form1Data}
+            setFormData={setForm1Data}
+            isValidateNext={isValidateNext}
+            setIsValidateNext={setIsValidateNext}
+            handlePrev={handlePrev}
+            handleNext={handleNext}
+          />
+        </>
+      )}
+      {step == 2 && (
+        <>
+          <Form2
+            selectedFiles={selectedFiles}
+            setSelectedFiles={setSelectedFiles}
+            isValidatePrev={isValidatePrev}
+            setIsValidatePrev={setIsValidatePrev}
+            isValidateNext={isValidateNext}
+            setIsValidateNext={setIsValidateNext}
+            handlePrev={handlePrev}
+            handleNext={handleNext}
+          />
+        </>
+      )}
+      {step == 3 && (
+        <>
+          <Form3
+          form3Data={form3Data}
+          setForm3Data={setForm3Data}
+            isValidatePrev={isValidatePrev}
+            setIsValidatePrev={setIsValidatePrev}
+            isValidateNext={isValidateNext}
+            setIsValidateNext={setIsValidateNext}
+            handlePrev={handlePrev}
+            handleSubmit={handleSubmit}
+          />
+        </>
+      )}
 
       <div className="m-16 flex justify-between">
-          <Button className="bg-blue-500 hover:bg-blue-700  disabled:opacity-50 disabled:cursor-not-allowed py-2 px-8 rounded-full text-black" disabled={!isValid || isFirstStep} onClick={handlePrev}>
-            Prev
-          </Button>
-          <Button className="bg-blue-500 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed py-2 px-8 rounded-full text-black" disabled={!isValid || isLastStep} onClick={handleNext}>
-            Next
-          </Button>
-        </div>
+        <Button
+          className="bg-blue-500 hover:bg-blue-700  disabled:opacity-50 disabled:cursor-not-allowed py-2 px-8 rounded-full text-black"
+          disabled={!isValid || isFirstStep}
+          onClick={handlePrevValidate}
+        >
+          Prev
+        </Button>
+        <Button
+          className="bg-red-500 hover:bg-red-700 py-2 px-8 rounded-full text-black"
+          onClick={resetForm}
+        >
+          Cancel
+        </Button>
+        <Button
+          className="bg-blue-500 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed py-2 px-8 rounded-full text-black"
+          disabled={!isValid || isLastStep}
+          onClick={handleNextValidate}
+        >
+          Next
+        </Button>
+        {step==3?(<Button
+          className="bg-green-500 hover:bg-green-700 py-2 px-8 rounded-full text-black"
+          onClick={handleNextValidate}
+        >
+          Submit
+        </Button>):<></>}
+      </div>
     </>
   );
 }
