@@ -36,12 +36,12 @@ const FormPage3: FC<ChildProps> = ({
     }
     if (isValidateNext) {
       if (!isDirty) {
-        setIsValidateNext(false);
         setIsDirty(true);
+        setIsValidateNext(false);
       }
        else {
-        setIsValidateNext(false);
         handleSubmit();
+        setIsValidateNext(false);
       }
       
     }

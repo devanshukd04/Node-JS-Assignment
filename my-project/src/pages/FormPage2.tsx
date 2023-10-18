@@ -34,15 +34,18 @@ const FormPage2: FC<ChildProps> = ({
     if (isValidateNext) {
       if (!isDirty) {
         setIsDirty(true);
+        setIsValidateNext(false);
       } else if (!selectedFiles || selectedFiles.length < 1) {
         toast.warn("Please upload files", {
           position: toast.POSITION.TOP_CENTER,
           autoClose: 1500,
         });
+        setIsValidateNext(false);
       } else {
         handleNext();
+        setIsValidateNext(false);
       }
-      setIsValidateNext(false);
+      
     }
   }, [isValidatePrev, isValidateNext]);
 

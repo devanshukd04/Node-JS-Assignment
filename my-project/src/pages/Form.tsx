@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Stepper, Step, Button } from "@material-tailwind/react";
 import { Form1Data } from "../data.ts";
 import Form1 from "./FormPage1.tsx";
@@ -9,6 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import Header from "../components/Header.tsx";
+import StepperComp from "./StepperComp.tsx";
 
 function Form() {
   const navigate = useNavigate();
@@ -33,6 +34,13 @@ function Form() {
   const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
 
   const [form3Data, setForm3Data] = useState<string []>([]);
+
+  useEffect(()=>{
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/signin", { state: { page: 1 } });
+    }
+  },[])
 
   const handleNext = () => {
     if (step == 2) {
@@ -124,15 +132,8 @@ function Form() {
   return (
     <>
     <Header/>
-      <div className="w-full py-4 px-8 bg-red-100">
-        <Stepper
-          className="mt-4 flex justify-between bg-black text-white"
-          activeStep={step}
-        >
-          <Step>1</Step>
-          <Step>2</Step>
-          <Step>3</Step>
-        </Stepper>
+      <div className="w-full content-center py-4 px-8 bg-grey-100">
+        <StepperComp step={step}/>
       </div>
 
       {step == 1 && (

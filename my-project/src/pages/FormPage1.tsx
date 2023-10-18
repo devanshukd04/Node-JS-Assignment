@@ -30,38 +30,48 @@ const FormPage1: FC<ChildProps> = ({ formData, setFormData, isValidateNext, setI
 
       if(!isDirty){
         setIsDirty(true);
+        setIsValidateNext(false);
       }
       else if(formData["username"]==""){
         toast.warn("Please enter first name", {position: toast.POSITION.TOP_CENTER, autoClose: 1500,})
+        setIsValidateNext(false);
       }
       else if(!formData["email"].match(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/)){
         toast.warn("Please enter valid email address", {position: toast.POSITION.TOP_CENTER, autoClose: 1500,})
+        setIsValidateNext(false);
       }
       else if(formData["number"].length<10 || formData["number"]==''){
         toast.warn("Please enter a valid mobile number", {position: toast.POSITION.TOP_CENTER, autoClose: 1500,})
+        setIsValidateNext(false);
       }
       else if(formData["addressLine1"]==""){
         toast.warn("Please enter valid address in Address line 2", {position: toast.POSITION.TOP_CENTER, autoClose: 1500,})
+        setIsValidateNext(false);
       }
       else if(formData["addressLine2"]==""){
         toast.warn("Please enter valid address in Address line 2", {position: toast.POSITION.TOP_CENTER, autoClose: 1500,})
+        setIsValidateNext(false);
       }
       else if(formData["city"]==''){
         toast.warn("Please enter name of city", {position: toast.POSITION.TOP_CENTER, autoClose: 1500,})
+        setIsValidateNext(false);
       }
       else if(formData["state"]==""){
         toast.warn("Please enter name of state", {position: toast.POSITION.TOP_CENTER, autoClose: 1500,})
+        setIsValidateNext(false);
       }
       else if(formData["pincode"]==""){
         toast.warn("Please enter pincode", {position: toast.POSITION.TOP_CENTER, autoClose: 1500,})
+        setIsValidateNext(false);
       }
       else if(formData["country"]==""){
         toast.warn("Please enter name of Country", {position: toast.POSITION.TOP_CENTER, autoClose: 1500,})
+        setIsValidateNext(false);
       }
       else{
         handleNext();
+        setIsValidateNext(false);
       }
-      setIsValidateNext(false);
     }
   },[isValidateNext])
 
