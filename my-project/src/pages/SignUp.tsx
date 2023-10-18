@@ -21,7 +21,6 @@ function SignUp() {
   } = useForm<UserData>({ mode: "onChange" });
 
   const showToast = (message, type) => {
-    console.log(message);
     toast[type](message, {
       position: "top-center",
       autoClose: 3000,
@@ -35,8 +34,6 @@ function SignUp() {
   };
 
   const onSubmit: SubmitHandler<UserData> = async (data) => {
-    console.log(isValid);
-    console.log(data);
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -45,13 +42,11 @@ function SignUp() {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/user/signup/createUser",
+        "https://node-js-assignment-2p5h.vercel.app/api/user/signup/createUser",
         data,
         config
       );
       let resData = res?.data;
-      console.log(res);
-      console.log(res.data);
       if (resData?.success) {
         toast.success(`User created successfully!`, {
           position: toast.POSITION.TOP_CENTER,
@@ -62,7 +57,6 @@ function SignUp() {
         }, 2500);
       }
     } catch (err) {
-      console.log(err);
       toast.warn(err?.message, {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 1500,

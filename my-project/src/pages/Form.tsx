@@ -95,16 +95,13 @@ function Form() {
 
       formData.append("data", JSON.stringify(data || {}));
 
-      console.log("Data ", formData);
 
       const res = await axios.post(
-        "http://localhost:5000/api/form/upload-data",
+        "https://node-js-assignment-2p5h.vercel.app/api/form/upload-data",
         formData,
         config
       );
       let resData = res?.data;
-      console.log(res);
-      console.log(res.data);
 
       if (resData?.success) {
         toast.success(`User created successfully!`, {

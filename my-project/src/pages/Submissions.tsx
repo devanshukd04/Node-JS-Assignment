@@ -40,14 +40,11 @@ const Submissions = () => {
         },
       };
       const res = await axios.get(
-        "http://localhost:5000/api/form/getSubmissions",
+        "https://node-js-assignment-2p5h.vercel.app/api/form/getSubmissions",
         config
       );
       setSubmissionData(res.data.data.data);
-      console.log("Submission Data ", submissionData);
       let resData = res?.data;
-      console.log(res);
-      console.log(res.data);
     } catch (error) {
       toast.warn(error?.message, {
         position: toast.POSITION.TOP_CENTER,
@@ -56,11 +53,7 @@ const Submissions = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(submissionData);
-  }, [submissionData]);
 
-  console.log("Submission Data ", submissionData);
   return (
     <div>
       <Header/>
@@ -161,9 +154,6 @@ const Submissions = () => {
                 <tbody>
                   {Object.values(submissionData).map(
                     (item: SubmissionFormData, index: number) => {
-                      console.log("Values " + item);
-
-                      console.log(item);
                       return (
                         <tr className="border-b border-gray-200 dark:border-gray-700">
                           <th

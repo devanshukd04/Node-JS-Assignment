@@ -26,8 +26,6 @@ const FormPage1: FC<ChildProps> = ({ formData, setFormData, isValidateNext, setI
 
 
   useEffect(()=>{
-    console.log("UseEffect");
-    console.log("Validate ",isValidateNext);
     if(isValidateNext){
 
       if(!isDirty){

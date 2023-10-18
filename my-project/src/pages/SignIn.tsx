@@ -11,6 +11,7 @@ import { useState } from "react";
 import Header from "../components/Header.tsx";
 
 function SignIn() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -33,8 +34,6 @@ function SignIn() {
   };
 
   const onSubmit: SubmitHandler<UserData> = async (data) => {
-    console.log(isValid);
-    console.log(data);
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -42,16 +41,17 @@ function SignIn() {
     };
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/user/signin",
+        "https://node-js-assignment-2p5h.vercel.app/api/user/signin",
         data,
         config
       );
       let resData = res?.data;
       if (resData?.success) {
         localStorage.setItem("token", resData?.data?.token);
+        localStorage.setItem("UserName", resData?.data?.user);
         showToast(resData.msg, "success");
 
-        // navigate("/bot");
+        navigate("/form");
       }
     } catch (err) {
       showToast(err?.response?.data?.msg, "error");

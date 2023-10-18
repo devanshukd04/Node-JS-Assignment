@@ -15,7 +15,7 @@ const app  = express();
 
 // cross origin resource sharing
 const corsOptions = {
-  origin: "http://localhost:3000"
+  origin: "*"
 }
 app.use(cors(corsOptions));
 
