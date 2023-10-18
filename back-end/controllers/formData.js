@@ -7,13 +7,9 @@ import { v2 as cloudinary } from "cloudinary";
 import jwt from "jsonwebtoken";
 
 const uploadFormData = async (req, res) => {
-  // console.log(req.body.files[0]);
-
-  console.log("Upload Data");
 
   const token = req.headers.authorization;
   const obj = JSON.parse(req.body.data);
-  console.log(obj);
 
   const {
     username,
@@ -32,14 +28,12 @@ const uploadFormData = async (req, res) => {
   try {
     if (token) {
       const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      console.log(decoded._id);
       const user = await User.findById(decoded._id).select("-password");
 
       if (!user) {
         return res.status(400).json(Response(false, "User does not exist", {}));
       }
 
-      console.log(user);
 
       let images = [];
       const files = req.files;
@@ -49,9 +43,7 @@ const uploadFormData = async (req, res) => {
           const fileUri = getDataUri(file);
           const myCloud = await cloudinary.uploader.upload(fileUri.content);
           images.push(myCloud.url);
-          console.log(images);
         } else {
-          console.log(images);
           const job = new JobApplication({
             user_email: user.email,
             username: username,
@@ -80,7 +72,6 @@ const uploadFormData = async (req, res) => {
       return res.status(404).json(Response(false, "Token was not passed", {}));
     }
   } catch (err) {
-    console.log(err.message);
     return res.status(401).json(Response(false, err.message, {}));
   }
 };
@@ -90,7 +81,6 @@ const getSubmissions = async (req, res) => {
   try {
     if (token) {
       const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      console.log(decoded._id);
       const user = await User.findById(decoded._id).select("-password");
       if (!user) {
         return res.status(400).json(Response(false, "User does not exist", {}));

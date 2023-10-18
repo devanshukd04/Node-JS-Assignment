@@ -5,8 +5,8 @@ import {Multiselect} from 'multiselect-react-dropdown';
 import { Form3Options } from "../data.ts";
 
 type ChildProps = {
-  form3Data:[];
-  setForm3Data:React.Dispatch<React.SetStateAction<[]>>;
+  form3Data:string [];
+  setForm3Data:React.Dispatch<React.SetStateAction<string []>>;
   isValidatePrev: boolean;
   setIsValidatePrev: React.Dispatch<React.SetStateAction<boolean>>;
   isValidateNext: boolean;

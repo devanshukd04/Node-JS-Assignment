@@ -33,3 +33,19 @@ export const Form3Options=[
   {label:'AI-ML Developer', id:1},
   {label:'Full Stack Developer', id:2},
 ]
+
+
+export type SubmissionFormData={
+  username:string
+  email:string
+  number:string
+  addressLine1:string,
+  addressLine2:string,
+  city:string,
+  state:string
+  pincode:string,
+  country:string,
+  files:string [],
+  job_application:string [],
+  createdAt:string
+}

@@ -7,10 +7,9 @@ import Form3 from "./FormPage3.tsx";
 import { useNavigate, Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from 'axios'
+import axios from "axios";
 
 function Form() {
-  
   const navigate = useNavigate();
   const [step, setStep] = useState<number>(1);
   const [isFirstStep, setIsFirstStep] = useState<boolean>(true);
@@ -32,7 +31,7 @@ function Form() {
   });
   const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
 
-  const [form3Data,setForm3Data]=useState<[]>([]);
+  const [form3Data, setForm3Data] = useState<string []>([]);
 
   const handleNext = () => {
     if (step == 2) {
@@ -56,70 +55,73 @@ function Form() {
     setStep(step - 1);
   };
 
-  const resetForm=()=>{
+  const resetForm = () => {
     setTimeout(function () {
       navigate("/signin", { state: { page: 1 } });
     }, 500);
-  }
+  };
 
-  const handlePrevValidate=()=>{
-setIsValidatePrev(true);
-  }
+  const handlePrevValidate = () => {
+    setIsValidatePrev(true);
+  };
 
-  const handleNextValidate=()=>{
-   setIsValidateNext(true); 
-  }
-  
+  const handleNextValidate = () => {
+    setIsValidateNext(true);
+  };
 
-  const handleSubmit=async()=>{
-    try{
-    const token=localStorage.getItem('token');
-    const config = {
-      headers: {
-        "authorization": token
-      },
-    };
+  const handleSubmit = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: {
+          authorization: token,
+        },
+      };
 
-    const formData = new FormData();
-    // Here was the problem -- I was appending the array itself
-    // to the "files" field
-    if(selectedFiles){
-    for (const file of selectedFiles) {
-      formData.append("files", file);
+      const formData = new FormData();
+      // Here was the problem -- I was appending the array itself
+      // to the "files" field
+      if (selectedFiles) {
+        for (const file of selectedFiles) {
+          formData.append("files", file);
+        }
+      }
+
+      const data = {
+        form1Data: form1Data,
+        form3Data: form3Data,
+      };
+
+      formData.append("data", JSON.stringify(data || {}));
+
+      console.log("Data ", formData);
+
+      const res = await axios.post(
+        "http://localhost:5000/api/form/upload-data",
+        formData,
+        config
+      );
+      let resData = res?.data;
+      console.log(res);
+      console.log(res.data);
+
+      if (resData?.success) {
+        toast.success(`User created successfully!`, {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 1500,
+        });
+        setTimeout(function () {
+          navigate("/signin", { state: { page: 1 } });
+        }, 2500);
+      }
+    } catch (err) {
+      console.log(err);
+      toast.warn(err?.message, {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 1500,
+      });
     }
-  }
-
-    const data={
-      form1Data:form1Data,
-      form3Data:form3Data
-    }
-
-    formData.append("data", JSON.stringify(data || {}));
-
-    console.log("Data ",formData);
-    
-    const res = await axios.post(
-      "http://localhost:5000/api/form/upload-data",
-      formData,
-      config
-    );
-    let resData = res?.data;
-    console.log(res)
-    console.log(res.data)
-
-    
-
-    if (resData?.success) {
-      toast.success(`User created successfully!`, {position: toast.POSITION.TOP_CENTER, autoClose: 1500,})
-      setTimeout(function () {
-        navigate("/signin", { state: { page: 1 } });
-      }, 2500);
-    }
-  } catch (err) {
-    console.log(err)
-    toast.warn(err?.message, {position: toast.POSITION.TOP_CENTER, autoClose: 1500,})
-  }
-  }
+  };
 
   return (
     <>
@@ -163,8 +165,8 @@ setIsValidatePrev(true);
       {step == 3 && (
         <>
           <Form3
-          form3Data={form3Data}
-          setForm3Data={setForm3Data}
+            form3Data={form3Data}
+            setForm3Data={setForm3Data}
             isValidatePrev={isValidatePrev}
             setIsValidatePrev={setIsValidatePrev}
             isValidateNext={isValidateNext}
@@ -196,12 +198,16 @@ setIsValidatePrev(true);
         >
           Next
         </Button>
-        {step==3?(<Button
-          className="bg-green-500 hover:bg-green-700 py-2 px-8 rounded-full text-black"
-          onClick={handleNextValidate}
-        >
-          Submit
-        </Button>):<></>}
+        {step == 3 ? (
+          <Button
+            className="bg-green-500 hover:bg-green-700 py-2 px-8 rounded-full text-black"
+            onClick={handleNextValidate}
+          >
+            Submit
+          </Button>
+        ) : (
+          <></>
+        )}
       </div>
     </>
   );
