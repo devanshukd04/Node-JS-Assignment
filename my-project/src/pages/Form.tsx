@@ -8,6 +8,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import Header from "../components/Header.tsx";
 
 function Form() {
   const navigate = useNavigate();
@@ -125,6 +126,7 @@ function Form() {
 
   return (
     <>
+    <Header/>
       <div className="w-full py-4 px-8 bg-red-100">
         <Stepper
           className="mt-4 flex justify-between bg-black text-white"
