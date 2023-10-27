@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, redirect } from "react-router-dom";
 import "./App.css";
 import SignUp from "./pages/SignUp.tsx";
 import SignIn from "./pages/SignIn.tsx";
@@ -20,6 +20,7 @@ function App() {
               {/*<Route path="homepage" element={<Homepage/>}/>
           <Route path="emailSpoofing" element={<Mails/>}/> */}
               {/* <Route path="contact" element={<Contact />} /> */}
+              <Route path="*" element={<SignUp />} />
             </Route>
           </Routes>
         </BrowserRouter>
