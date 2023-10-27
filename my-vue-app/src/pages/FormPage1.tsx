@@ -99,7 +99,7 @@ const FormPage1: FC<ChildProps> = ({ formData, setFormData, isValidateNext, setI
                 className="w-full p-2 border border-gray-300 rounded mt-1"
                 id={field.name}
                 name={field.name}
-                value={formData[field.name]}
+                value={formData[field.name as keyof Form1Data]}
                 onChange={handleChange}
                 required={field.required}
               />

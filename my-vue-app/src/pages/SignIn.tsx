@@ -15,18 +15,20 @@ function SignIn() {
     getValues,
   } = useForm<UserData>({ mode: "onChange" });
 
-  const showToast = (message:any, type:any) => {
-    toast[type](message, {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  };
+  
+
+  // const showToast = (message:any, type: keyof typeof toast) => {
+  //   toast[type](message, {
+  //     position: "top-center",
+  //     autoClose: 3000,
+  //     hideProgressBar: false,
+  //     closeOnClick: true,
+  //     pauseOnHover: true,
+  //     draggable: true,
+  //     progress: undefined,
+  //     theme: "light",
+  //   });
+  // };
 
   const onSubmit: SubmitHandler<UserData> = async (data) => {
     const config = {
@@ -44,12 +46,18 @@ function SignIn() {
       if (resData?.success) {
         localStorage.setItem("token", resData?.data?.token);
         localStorage.setItem("UserName", resData?.data?.user);
-        showToast(resData.msg, "success");
+        toast.success(resData.msg, {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 1500,
+        });
 
         navigate("/form");
       }
     } catch (err:any) {
-      showToast(err?.response?.data?.msg, "error");
+      toast.warn(err?.response?.data?.msg, {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 1500,
+      });
     }
   };
 
