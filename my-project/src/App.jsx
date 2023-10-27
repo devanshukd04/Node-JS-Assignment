@@ -12,7 +12,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/">
-            {/* <Route index element={<Home />} /> */}
+            {/* <Route index element={<Home />} /> we need to add default path */}
             <Route path="register" element={<SignUp />} />
             <Route path="signin" element={<SignIn />} />
             <Route path="form" element={<Form/>}/>
