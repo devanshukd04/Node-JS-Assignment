@@ -87,7 +87,7 @@ const FormPage1: FC<ChildProps> = ({ formData, setFormData, isValidateNext, setI
         <div className="max-w-xl w-full mx-auto mt-4 mb-4 bg-white p-8 border border-gray-300">
           <form onSubmit={handleSubmit} className="space-y-6">
             
-{/* Added necessary files */}
+{/* Added necessary files to parse data*/}
             {Form1Fields.map((field) => (
             <div key={field.name}>
               <label
