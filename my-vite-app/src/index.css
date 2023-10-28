@@ -69,7 +69,6 @@ button:focus-visible {
 } */
 #root{
   padding: 0rem;
-  padding-bottom:1rem;
   max-width: 100%
 }
 
