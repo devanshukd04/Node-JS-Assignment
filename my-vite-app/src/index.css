@@ -69,7 +69,6 @@ button:focus-visible {
 } */
 #root{
   padding: 0rem;
-  background-color: aqua;
   max-width: 100%
 }
 
