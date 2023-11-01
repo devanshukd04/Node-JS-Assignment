@@ -93,7 +93,7 @@ function Form() {
       // to the "files" field
       if (selectedFiles) {
         for (const file of selectedFiles) {
-          formData.append("files1", file);
+          formData.append("content[]", file);
         }
       }
 
