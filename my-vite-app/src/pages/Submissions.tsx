@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { SubmissionFormData } from "../data";
 import Header from "../components/Header.tsx";
 
@@ -11,6 +11,8 @@ const Submissions = () => {
   const [submissionData, setSubmissionData] = useState<SubmissionFormData[]>(
     []
   );
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -25,8 +27,8 @@ const Submissions = () => {
     try {
       const config = {
         headers: {
-          'Authorization': 'Bearer ' + token
-        }
+          Authorization: "Bearer " + token,
+        },
       };
       const res = await axios.get(
         "https://x8ki-letl-twmt.n7.xano.io/api:wcYQ6Ksz/jobapplications",
@@ -34,7 +36,7 @@ const Submissions = () => {
       );
       console.log(res);
       setSubmissionData(res.data);
-    } catch (error:any) {
+    } catch (error: any) {
       toast.warn(error?.message, {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 1500,
@@ -42,10 +44,12 @@ const Submissions = () => {
     }
   };
 
+  console.log("startDate", startDate);
+  console.log("endDate", endDate);
 
   return (
     <div>
-      <Header/>
+      <Header />
       <div className="min-h-screen bg-gray-50 m-4 flex flex-col justify-center">
         <div className="max-w-md w-full mx-auto">
           <div className="text-3xl text-center font-bold">Submissions</div>
@@ -71,9 +75,10 @@ const Submissions = () => {
               </div>
               <input
                 name="start"
-                type="text"
+                type="date"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Select date start"
+                onChange={(e) => setStartDate(new Date(e.target.value))}
               />
             </div>
             <span className="mx-4 text-gray-500">to</span>
@@ -91,9 +96,10 @@ const Submissions = () => {
               </div>
               <input
                 name="end"
-                type="text"
+                type="date"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Select date end"
+                onChange={(e) => setEndDate(new Date(e.target.value))}
               />
             </div>
           </div>
@@ -143,26 +149,35 @@ const Submissions = () => {
                 <tbody>
                   {Object.values(submissionData).map(
                     (item: SubmissionFormData) => {
-                      return (
-                        <tr className="border-b border-gray-200 dark:border-gray-700">
-                          <th
-                            scope="row"
-                            className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800"
-                          >
-                            {item.name}
-                          </th>
-                          <td className="px-6 py-4">{item.email}</td>
-                          <td className="px-6 py-4 bg-gray-50 dark:bg-gray-800">
-                            {item.state}
-                          </td>
-                          <td className="px-6 py-4">{item.city}</td>
-                          <td className="px-6 py-4">{item.mobile_number}</td>
-                          <td className="px-6 py-4 bg-gray-50 dark:bg-gray-800">
-                            {item.country}
-                          </td>
-                          <td className="px-6 py-4">${item.created_at}</td>
-                        </tr>
-                      );
+                      const date:Date=new Date(item.created_at);
+                      if (
+                        (startDate == null || startDate.getTime() <= date.getTime()) &&
+                        (endDate == null || endDate.getTime() >= date.getTime())
+                      ) {
+                      
+                        return (
+                          <tr className="border-b border-gray-200 dark:border-gray-700">
+                            <th
+                              scope="row"
+                              className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800"
+                            >
+                              {item.name}
+                            </th>
+                            <td className="px-6 py-4">{item.email}</td>
+                            <td className="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+                              {item.state}
+                            </td>
+                            <td className="px-6 py-4">{item.city}</td>
+                            <td className="px-6 py-4">{item.mobile_number}</td>
+                            <td className="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+                              {item.country}
+                            </td>
+                            <td className="px-6 py-4">
+                              {date.toDateString()}
+                            </td>
+                          </tr>
+                        );
+                      }
                     }
                   )}
                 </tbody>
