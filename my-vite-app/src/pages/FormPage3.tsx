@@ -46,6 +46,7 @@ const FormPage3: FC<ChildProps> = ({
   }, [isValidatePrev, isValidateNext]);
 
   const handleSelect=(selectedList:any, selectedItem:any)=>{
+    setIsDirty(true);
     console.log(selectedItem)
     setForm3Data(selectedList.map((item:any)=>item.label));
   }

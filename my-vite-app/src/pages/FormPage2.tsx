@@ -27,6 +27,7 @@ const FormPage2: FC<ChildProps> = ({
   const [isDirty, setIsDirty] = useState<boolean>(false);
 
   useEffect(() => {
+    console.log('dirty',isDirty)
     if (isValidatePrev) {
       handlePrev();
       setIsValidatePrev(false);
@@ -51,6 +52,7 @@ const FormPage2: FC<ChildProps> = ({
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
+    setIsDirty(true);
 
     if (files) {
       if (files.length > 3) {

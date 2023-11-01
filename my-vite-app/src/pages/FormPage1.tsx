@@ -18,6 +18,7 @@ const FormPage1: FC<ChildProps> = ({ formData, setFormData, isValidateNext, setI
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    setIsDirty(true);
     setFormData({ ...formData, [name]: value });
   };
 
@@ -25,6 +26,7 @@ const FormPage1: FC<ChildProps> = ({ formData, setFormData, isValidateNext, setI
 
 
   useEffect(()=>{
+    console.log("Dirty",isDirty)
     if(isValidateNext){
 
       if(!isDirty){

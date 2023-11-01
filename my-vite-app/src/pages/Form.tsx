@@ -17,8 +17,8 @@ function Form() {
   const [isFirstStep, setIsFirstStep] = useState<boolean>(true);
   const [isLastStep, setIsLastStep] = useState<boolean>(false);
   const [isValid, setIsValid] = useState<boolean>(true);
-  const [isValidatePrev, setIsValidatePrev] = useState<boolean>(true);
-  const [isValidateNext, setIsValidateNext] = useState<boolean>(true);
+  const [isValidatePrev, setIsValidatePrev] = useState<boolean>(false);
+  const [isValidateNext, setIsValidateNext] = useState<boolean>(false);
 
   const [form1Data, setForm1Data] = useState<Form1Data>({
     username: "",
@@ -43,7 +43,8 @@ function Form() {
   },[])
 
   const handleNext = () => {
-    console.log(setIsValid)
+    console.log(setIsValid);
+    setIsValidateNext(true)
     if (step == 2) {
       setIsFirstStep(false);
       setIsLastStep(true);
@@ -55,6 +56,7 @@ function Form() {
   };
 
   const handlePrev = () => {
+    setIsValidateNext(true);
     if (step == 2) {
       setIsFirstStep(true);
       setIsLastStep(false);
@@ -71,11 +73,14 @@ function Form() {
     }, 500);
   };
 
-  const handlePrevValidate = () => {
+  const handlePrevValidate = (e:any) => {
+    e.preventDefault();
     setIsValidatePrev(true);
   };
 
-  const handleNextValidate = () => {
+  const handleNextValidate = (e:any) => {
+    e.preventDefault();
+    console.log(isValidateNext);
     setIsValidateNext(true);
   };
 
