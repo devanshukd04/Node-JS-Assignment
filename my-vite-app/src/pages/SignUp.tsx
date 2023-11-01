@@ -1,4 +1,4 @@
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { UserData } from "../data";
 import axios from "axios";
 import { useNavigate} from "react-router-dom";
@@ -42,7 +42,7 @@ function SignUp() {
         getValues(),
         config
       );
-      let resData = res?.data;
+      // let resData = res?.data;
       if (res.status==200) {
         toast.success(`User created successfully!`, {
           position: toast.POSITION.TOP_CENTER,

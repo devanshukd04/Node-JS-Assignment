@@ -97,12 +97,7 @@ function Form() {
         }
       }
 
-      console.log(formData)
-
-      const data = {
-        form1Data: form1Data,
-        form3Data: form3Data,
-      };
+      console.log(formData);
 
       // formData.append('user_email',form1Data.email);
       formData.append('name',form1Data.username);
@@ -124,7 +119,6 @@ function Form() {
         formData,
         config
       );
-      let resData = res?.data;
 
       console.log(res)
 
