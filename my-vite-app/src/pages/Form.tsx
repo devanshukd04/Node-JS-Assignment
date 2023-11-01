@@ -93,26 +93,42 @@ function Form() {
       // to the "files" field
       if (selectedFiles) {
         for (const file of selectedFiles) {
-          formData.append("files", file);
+          formData.append("files1", file);
         }
       }
+
+      console.log(formData)
 
       const data = {
         form1Data: form1Data,
         form3Data: form3Data,
       };
 
-      formData.append("data", JSON.stringify(data || {}));
+      // formData.append('user_email',form1Data.email);
+      formData.append('name',form1Data.username);
+      formData.append('email',form1Data.email);
+      formData.append('mobile_number',form1Data.number);
+      formData.append('addressLine1',form1Data.addressLine1);
+      formData.append('addressLine2',form1Data.addressLine2);
+      formData.append('city',form1Data.city);
+      formData.append('state',form1Data.state);
+      formData.append('pincode',form1Data.pincode);
+      formData.append('country',form1Data.country);
+      formData.append('job_roles',JSON.stringify(form3Data || {}));
+
+      // formData.append("data", JSON.stringify(data || {}));
 
 
       const res:Response = await axios.post(
-        "https://node-js-assignment-2p5h.vercel.app/api/form/upload-data",
+        "https://x8ki-letl-twmt.n7.xano.io/api:wcYQ6Ksz/jobapplications",
         formData,
         config
       );
       let resData = res?.data;
 
-      if (resData?.success) {
+      console.log(res)
+
+      if (res?.status==200) {
         toast.success(`User created successfully!`, {
           position: toast.POSITION.TOP_CENTER,
           autoClose: 1500,

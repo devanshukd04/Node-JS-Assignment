@@ -18,7 +18,8 @@ export type Form1Data={
 
 export type Response={
   message:string,
-  data:any
+  data:any,
+  status:number
 } 
 
 export const Form1Fields = [
@@ -41,9 +42,9 @@ export const Form3Options=[
 
 
 export type SubmissionFormData={
-  username:string
+  name:string
   email:string
-  number:string
+  mobile_number:string
   addressLine1:string,
   addressLine2:string,
   city:string,
@@ -51,6 +52,6 @@ export type SubmissionFormData={
   pincode:string,
   country:string,
   files:string [],
-  job_application:string [],
-  createdAt:string
+  job_roles:string [],
+  created_at:string
 }

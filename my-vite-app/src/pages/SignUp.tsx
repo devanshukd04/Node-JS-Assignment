@@ -28,7 +28,8 @@ function SignUp() {
   //   });
   // };
 
-  const onSubmit: SubmitHandler<UserData> = async (data) => {
+  const onSubmit = async (e:any) => {
+    e.preventDefault();
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -37,12 +38,12 @@ function SignUp() {
 
     try {
       const res = await axios.post(
-        "https://node-js-assignment-2p5h.vercel.app/api/user/signup/createUser",
-        data,
+        "https://x8ki-letl-twmt.n7.xano.io/api:wcYQ6Ksz/auth/signup",
+        getValues(),
         config
       );
       let resData = res?.data;
-      if (resData?.success) {
+      if (res.status==200) {
         toast.success(`User created successfully!`, {
           position: toast.POSITION.TOP_CENTER,
           autoClose: 1500,
@@ -170,7 +171,7 @@ function SignUp() {
               <button
                 className="button w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 rounded-md text-white text-sm"
                 type="submit"
-                onClick={() => onSubmit(getValues())}
+                onClick={onSubmit}
               >
                 Submit
               </button>

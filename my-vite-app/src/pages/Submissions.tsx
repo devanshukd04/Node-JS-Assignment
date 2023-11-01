@@ -25,14 +25,15 @@ const Submissions = () => {
     try {
       const config = {
         headers: {
-          authorization: token,
-        },
+          'Authorization': 'Bearer ' + token
+        }
       };
       const res = await axios.get(
-        "https://node-js-assignment-2p5h.vercel.app/api/form/getSubmissions",
+        "https://x8ki-letl-twmt.n7.xano.io/api:wcYQ6Ksz/jobapplications",
         config
       );
-      setSubmissionData(res.data.data.data);
+      console.log(res);
+      setSubmissionData(res.data);
     } catch (error:any) {
       toast.warn(error?.message, {
         position: toast.POSITION.TOP_CENTER,
@@ -148,18 +149,18 @@ const Submissions = () => {
                             scope="row"
                             className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800"
                           >
-                            {item.username}
+                            {item.name}
                           </th>
                           <td className="px-6 py-4">{item.email}</td>
                           <td className="px-6 py-4 bg-gray-50 dark:bg-gray-800">
                             {item.state}
                           </td>
-                          <td className="px-6 py-4">${item.city}</td>
-                          <td className="px-6 py-4">{item.number}</td>
+                          <td className="px-6 py-4">{item.city}</td>
+                          <td className="px-6 py-4">{item.mobile_number}</td>
                           <td className="px-6 py-4 bg-gray-50 dark:bg-gray-800">
                             {item.country}
                           </td>
-                          <td className="px-6 py-4">${item.createdAt}</td>
+                          <td className="px-6 py-4">${item.created_at}</td>
                         </tr>
                       );
                     }

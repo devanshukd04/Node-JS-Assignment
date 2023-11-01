@@ -30,7 +30,9 @@ function SignIn() {
   //   });
   // };
 
-  const onSubmit: SubmitHandler<UserData> = async (data) => {
+  const onSubmit = async (e:any) => {
+    e.preventDefault();
+    
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -38,14 +40,15 @@ function SignIn() {
     };
     try {
       const res = await axios.post(
-        "https://node-js-assignment-2p5h.vercel.app/api/user/signin",
-        data,
+        "https://x8ki-letl-twmt.n7.xano.io/api:wcYQ6Ksz/auth/login",
+        getValues(),
         config
       );
+
       let resData = res?.data;
-      if (resData?.success) {
-        localStorage.setItem("token", resData?.data?.token);
-        localStorage.setItem("UserName", resData?.data?.user);
+      if (res?.status==200) {
+        localStorage.setItem("token", resData?.authToken);
+        localStorage.setItem("UserName", resData?.user);
         toast.success(resData.msg, {
           position: toast.POSITION.TOP_CENTER,
           autoClose: 1500,
@@ -53,8 +56,11 @@ function SignIn() {
 
         navigate("/form");
       }
+      else{
+
+      }
     } catch (err:any) {
-      toast.warn(err?.response?.data?.msg, {
+      toast.warn(err?.response?.data?.message, {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 1500,
       });
@@ -127,8 +133,8 @@ function SignIn() {
             <div>
               <button
                 className="button w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 rounded-md text-white text-sm"
-                type="submit"
-                onClick={() => onSubmit(getValues())}
+                // type="submit"
+                onClick={onSubmit}
               >
                 Submit
               </button>
