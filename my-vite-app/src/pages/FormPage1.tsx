@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useEffect, useState } from "react";
+import React, { FC, ReactElement, useEffect } from "react";
 import { Form1Data, Form1Fields } from "../data.ts";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -18,22 +18,15 @@ const FormPage1: FC<ChildProps> = ({ formData, setFormData, isValidateNext, setI
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setIsDirty(true);
     setFormData({ ...formData, [name]: value });
   };
 
-  const [isDirty, setIsDirty]=useState<boolean>(false);;
 
 
   useEffect(()=>{
-    console.log("Dirty",isDirty)
     if(isValidateNext){
 
-      if(!isDirty){
-        setIsDirty(true);
-        setIsValidateNext(false);
-      }
-      else if(formData["username"]==""){
+      if(formData["username"]==""){
         toast.warn("Please enter first name", {position: toast.POSITION.TOP_CENTER, autoClose: 1500,})
         setIsValidateNext(false);
       }

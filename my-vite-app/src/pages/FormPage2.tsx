@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, FC, useEffect } from "react";
+import React, { ChangeEvent, FC, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -24,19 +24,14 @@ const FormPage2: FC<ChildProps> = ({
   handleNext,
 }) => {
   // const [fileName, setFileName] = useState<[string]>();
-  const [isDirty, setIsDirty] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log('dirty',isDirty)
     if (isValidatePrev) {
       handlePrev();
       setIsValidatePrev(false);
     }
     if (isValidateNext) {
-      if (!isDirty) {
-        setIsDirty(true);
-        setIsValidateNext(false);
-      } else if (!selectedFiles || selectedFiles.length < 1) {
+     if (!selectedFiles || selectedFiles.length < 1) {
         toast.warn("Please upload files", {
           position: toast.POSITION.TOP_CENTER,
           autoClose: 1500,
@@ -52,7 +47,7 @@ const FormPage2: FC<ChildProps> = ({
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    setIsDirty(true);
+    // setIsDirty(true);
 
     if (files) {
       if (files.length > 3) {

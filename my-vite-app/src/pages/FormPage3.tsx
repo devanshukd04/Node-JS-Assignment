@@ -1,11 +1,12 @@
-import React, { useState, FC, useEffect } from "react";
-import { ToastContainer } from "react-toastify";
+import React, { FC, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {Multiselect} from 'multiselect-react-dropdown';
+import { Multiselect } from "multiselect-react-dropdown";
 import { Form3Options } from "../data.ts";
 
 type ChildProps = {
-  setForm3Data:React.Dispatch<React.SetStateAction<string []>>;
+  form3Data: string[];
+  setForm3Data: React.Dispatch<React.SetStateAction<string[]>>;
   isValidatePrev: boolean;
   setIsValidatePrev: React.Dispatch<React.SetStateAction<boolean>>;
   isValidateNext: boolean;
@@ -15,6 +16,7 @@ type ChildProps = {
 };
 
 const FormPage3: FC<ChildProps> = ({
+  form3Data,
   setForm3Data,
   isValidatePrev,
   setIsValidatePrev,
@@ -22,34 +24,29 @@ const FormPage3: FC<ChildProps> = ({
   setIsValidateNext,
   handlePrev,
   handleSubmit,
-}) =>  {
-  
-  const [isDirty,setIsDirty]=useState<boolean>(false);
-
-
+}) => {
   useEffect(() => {
     if (isValidatePrev) {
       handlePrev();
       setIsValidatePrev(false);
     }
     if (isValidateNext) {
-      if (!isDirty) {
-        setIsDirty(true);
-        setIsValidateNext(false);
-      }
-       else {
+      if (form3Data.length < 1) {
+        toast.warn("You need to select atleast 1 job profile", {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 1500,
+        });
+      } else {
         handleSubmit();
         setIsValidateNext(false);
       }
-      
     }
   }, [isValidatePrev, isValidateNext]);
 
-  const handleSelect=(selectedList:any, selectedItem:any)=>{
-    setIsDirty(true);
-    console.log(selectedItem)
-    setForm3Data(selectedList.map((item:any)=>item.label));
-  }
+  const handleSelect = (selectedList: any, selectedItem: any) => {
+    console.log(selectedItem);
+    setForm3Data(selectedList.map((item: any) => item.label));
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center">
@@ -73,9 +70,8 @@ const FormPage3: FC<ChildProps> = ({
           displayValue="label"
           onSelect={handleSelect}
         />
-          
       </div>
-      <ToastContainer/>
+      <ToastContainer />
     </div>
   );
 };

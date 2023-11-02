@@ -44,7 +44,7 @@ function Form() {
 
   const handleNext = () => {
     console.log(setIsValid);
-    setIsValidateNext(true)
+    setIsValidateNext(false)
     if (step == 2) {
       setIsFirstStep(false);
       setIsLastStep(true);
@@ -56,7 +56,8 @@ function Form() {
   };
 
   const handlePrev = () => {
-    setIsValidateNext(true);
+    setIsValidateNext(false);
+    console.log('prev')
     if (step == 2) {
       setIsFirstStep(true);
       setIsLastStep(false);
@@ -128,7 +129,7 @@ function Form() {
       console.log(res)
 
       if (res?.status==200) {
-        toast.success(`User created successfully!`, {
+        toast.success(`Application submitted successfully!`, {
           position: toast.POSITION.TOP_CENTER,
           autoClose: 1500,
         });
@@ -180,6 +181,7 @@ function Form() {
       {step == 3 && (
         <>
           <Form3
+            form3Data={form3Data}
             setForm3Data={setForm3Data}
             isValidatePrev={isValidatePrev}
             setIsValidatePrev={setIsValidatePrev}
