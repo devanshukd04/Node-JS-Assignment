@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { UserData } from "../data";
 import { ToastContainer, toast } from "react-toastify";
@@ -14,6 +15,13 @@ function SignIn() {
     formState: { errors },
     getValues,
   } = useForm<UserData>({ mode: "onChange" });
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/form-submissions", { state: { page: 1 } });
+    } 
+  }, []);
 
   
 

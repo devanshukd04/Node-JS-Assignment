@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { UserData } from "../data";
 import axios from "axios";
@@ -27,6 +28,13 @@ function SignUp() {
   //     theme: "light",
   //   });
   // };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/form-submissions", { state: { page: 1 } });
+    } 
+  }, []);
 
   const onSubmit = async (e:any) => {
     e.preventDefault();
